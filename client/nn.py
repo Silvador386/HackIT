@@ -7,6 +7,8 @@ import model
 import torch.nn as nn
 import copy
 
+
+
 class ClassificationFaceDataset(Dataset):
     
 
@@ -82,17 +84,19 @@ def train(model):
                 print(f"epoch={epoch}, loss={loss}, test_accuracy={acc}, train_accuracy={evaluateAccuracy(model,dataset,test=False)}")
         step_lr_scheduler.step()
 
+
 def evaluateAccuracy(model,dataset:ClassificationFaceDataset, test=False):
     corr=0
     for i, (dataX, labels) in enumerate(getCorrectAccuracyInputs(test)):
         labels = labels.type(torch.LongTensor).to(device)
         dataX = dataX.to(device)
         dataX = dataX.to(torch.float32)
-        output =  model(dataX).to(device)
+        output = model(dataX).to(device)
         _,predicted =torch.max(output, dim=1)
         corr += (predicted).eq(labels).sum()
     acc = corr /(len(dataset))
     return acc.item()
+
 
 def getCorrectAccuracyInputs(test=False):
     if test:
@@ -101,4 +105,5 @@ def getCorrectAccuracyInputs(test=False):
         return dataset
 
 
-train(model)
+if __name__ == "__main__":
+    train(model)
