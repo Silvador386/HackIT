@@ -4,7 +4,7 @@ import time
 
 from utils import write_to_json
 
-OUTPUT_PATH = "../data/test.json"
+OUTPUT_PATH = "../data/test2.json"
 
 
 def main():
@@ -39,6 +39,7 @@ def main():
                     print(id, x, y)
 
                 write_to_json(json_dict, OUTPUT_PATH)
+                return
 
         cTime = time.time()
         fps = 1/(cTime-pTime)
@@ -51,7 +52,6 @@ def main():
 
     cv2.destroyAllWindows()
     cap.release()
-
 
 
 if __name__ == "__main__":
