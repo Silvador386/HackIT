@@ -4,6 +4,8 @@ import time
 
 from utils import write_to_json
 
+OUTPUT_PATH = "../data/test.json"
+
 
 def main():
     cap = cv2.VideoCapture(0)
@@ -25,12 +27,18 @@ def main():
         if results.multi_face_landmarks:
             for faceLms in results.multi_face_landmarks:
                 mpDraw.draw_landmarks(img, faceLms, mpFaceMesh.FACEMESH_CONTOURS, drawSpec, drawSpec)
+                json_dict = {}
 
                 for id, lm in enumerate(faceLms.landmark):
                     ih, iw, ic = img.shape
                     x, y = int(lm.x*iw), int(lm.y*ih)
+
+                    json_dict[id] = {"x": x,
+                                     "y": y,
+                                     "z": lm.z}
                     print(id, x, y)
 
+                write_to_json(json_dict, OUTPUT_PATH)
 
         cTime = time.time()
         fps = 1/(cTime-pTime)
@@ -43,6 +51,7 @@ def main():
 
     cv2.destroyAllWindows()
     cap.release()
+
 
 
 if __name__ == "__main__":
